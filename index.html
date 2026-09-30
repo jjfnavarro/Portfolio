@@ -1,993 +1,743 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-      Justin Navarro's Portfolio - Software Developer | Junior Full-Stack
-      Developer | Web Developer | Embedded Systems Developer
-    </title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    <meta
+      name="description"
+      content="Portfolio of Justin John Navarro, a full-stack software developer based in Davao City, Philippines."
     />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f7f9f0" />
+    <title>Justin Navarro | Full-Stack Software Developer</title>
+
+    <!-- Inline script to prevent theme flash (FOUC) - defaults to light theme -->
+    <script>
+      (function () {
+        try {
+          const savedTheme = localStorage.getItem("portfolio-theme");
+          if (savedTheme) {
+            document.documentElement.setAttribute("data-theme", savedTheme);
+          } else {
+            document.documentElement.setAttribute("data-theme", "light");
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Manrope:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=9" />
+    <script src="script.js?v=9" defer></script>
   </head>
-  <body class="portfolio-page">
-    <div class="page-dots page-dots-a" aria-hidden="true"></div>
-    <div class="page-dots page-dots-b" aria-hidden="true"></div>
-    <!-- Navigation -->
-    <header>
-      <div class="nav-container">
-        <a
-          href="#"
-          onclick="
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            return false;
-          "
-          class="logo"
-          style="cursor: pointer; text-decoration: none"
-          >JJDEV</a
-        >
-        <nav class="nav-links">
-          <a href="#about" class="nav-link">About</a>
-          <a href="#skills" class="nav-link">Skills</a>
-          <a href="#projects" class="nav-link">Projects</a>
-          <a href="#experience" class="nav-link">Experience</a>
-          <a href="#contact" class="nav-link">Contact</a>
-          <a href="Navarro-Resume.pdf" download class="nav-cta"
-            >Resume</a
-          >
+  <body>
+    <!-- Reading Progress Bar -->
+    <div class="scroll-progress-bar" id="scroll-progress" aria-hidden="true"></div>
+
+    <!-- Ambient Cosmic Glow Elements -->
+    <div class="cosmic-ambient" aria-hidden="true">
+      <div class="cosmic-glow cosmic-glow-1"></div>
+      <div class="cosmic-glow cosmic-glow-2"></div>
+      <div class="cosmic-grid-pattern"></div>
+    </div>
+
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="site-header" data-header>
+      <div class="container nav-shell">
+        <div class="nav-brand-group">
+          <a class="brand" href="#top" aria-label="Justin Navarro, home">
+            <span class="brand-mark" aria-hidden="true">JN</span>
+            <span class="brand-name">Justin Navarro</span>
+          </a>
+
+          <!-- Live Local Time (Davao City UTC+8) -->
+          <div class="nav-meta-badge" id="local-time-chip" title="Local time in Davao City, Philippines (UTC+8)">
+            <span class="live-dot" aria-hidden="true"></span>
+            <span class="nav-meta-text">Davao <span id="local-time" class="mono-time">--:--</span></span>
+          </div>
+        </div>
+
+        <nav class="nav-links" id="primary-navigation" aria-label="Primary" data-nav>
+          <a href="#about">About</a>
+          <a href="#work">Work</a>
+          <a href="#experience">Experience</a>
+          <a href="#contact">Contact</a>
+          <a class="nav-resume" href="Navarro-Resume.pdf" download>
+            <span>Resume</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+          </a>
         </nav>
+
+        <div class="nav-actions-group">
+          <!-- Theme Toggle (Clean SVG icons, zero emojis) -->
+          <button
+            class="theme-toggle-btn"
+            id="theme-toggle"
+            type="button"
+            aria-label="Switch between Cosmic Dark and Vanilla Light theme"
+            title="Toggle theme"
+          >
+            <svg class="theme-icon theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <svg class="theme-icon theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </button>
+
+          <button
+            class="menu-button"
+            type="button"
+            aria-label="Open navigation"
+            aria-controls="primary-navigation"
+            aria-expanded="false"
+            data-menu-button
+          >
+            <span></span><span></span>
+          </button>
+        </div>
       </div>
     </header>
 
-    <!-- Hero Section -->
-    <section
-      class="hero-gradient min-h-screen flex items-center justify-center pt-24"
-    >
-      <div class="max-w-6xl mx-auto px-6 py-20 w-full">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
-          <div class="animate-fade-in-up hero-copy">
-            <span class="eyebrow"
-              >BS Information Technology Graduate · Software Developer · Junior
-              Full-Stack Developer</span
-            >
-            <h1
-              class="text-5xl md:text-6xl font-black mb-6 leading-[1.05] tracking-tight max-w-3xl"
-            >
-              <span class="block text-white">
-                Junior full-stack developer building scalable and
-              </span>
-              <span class="block text-white">
-                user-friendly web applications.
-              </span>
-            </h1>
-            <p class="text-xl text-gray-200 mb-8 leading-relaxed max-w-2xl">
-              I'm Justin John F. Navarro, a BS Information Technology graduate
-              from Ateneo de Davao University seeking opportunities as a
-              software developer, junior full-stack developer, web developer, or
-              embedded systems developer. I create thoughtful web interfaces,
-              embedded systems, and IoT solutions with a focus on clarity,
-              performance, and dependable execution.
+    <main id="main-content">
+      <section class="hero" id="top">
+        <div class="container hero-grid">
+          <div class="hero-copy reveal">
+            <div class="status">
+              <span class="pulse-indicator" aria-hidden="true"></span>
+              Open to software opportunities
+            </div>
+            <p class="eyebrow">Full-stack developer · Davao City, Philippines</p>
+            <h1>I build reliable software with a clear purpose.</h1>
+            <p class="hero-lede">
+              I’m Justin, an Information Technology graduate focused on full-stack
+              web development, thoughtful interfaces, and connected systems. I turn
+              practical problems into products that are useful, maintainable, and
+              easy to understand.
             </p>
-            <div class="hero-actions flex gap-4 flex-wrap items-start">
-              <a href="Navarro-Resume.pdf" download class="cta-button">
-                <i class="fas fa-download mr-2"></i> Download Resume
+            <div class="hero-actions">
+              <a class="button button-primary" href="#work">
+                <span>Explore selected work</span>
+                <span class="button-arrow" aria-hidden="true">↘</span>
               </a>
-              <a href="#projects" class="secondary-button">
-                <i class="fas fa-folder-open mr-2"></i> View Work
+              <a class="button button-secondary" href="Navarro-Resume.pdf" download>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Download résumé</span>
+              </a>
+              <button
+                class="button button-ghost copy-email-action"
+                type="button"
+                data-copy="navarrojustin2026@gmail.com"
+                aria-label="Copy email address to clipboard"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copy email</span>
+              </button>
+            </div>
+            <dl class="hero-facts" aria-label="Professional details">
+              <div class="hero-fact-card">
+                <dt>Focus</dt>
+                <dd>Full-stack web &amp; IoT</dd>
+              </div>
+              <div class="hero-fact-card">
+                <dt>Core stack</dt>
+                <dd>React, Node.js, MySQL</dd>
+              </div>
+              <div class="hero-fact-card">
+                <dt>Education</dt>
+                <dd>BS Information Technology</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="hero-portrait reveal" data-delay="1">
+            <div class="portrait-card spotlight-card">
+              <div class="portrait-topline">
+                <span class="portrait-badge-pill">Software developer</span>
+                <span class="portrait-year-pill">2026</span>
+              </div>
+              <div class="portrait-image-wrap">
+                <img src="jj.png" alt="Portrait of Justin John Navarro" />
+              </div>
+              <div class="portrait-footer">
+                <div>
+                  <strong>Justin John F. Navarro</strong>
+                  <span>Building for web, systems, and people.</span>
+                </div>
+                <span class="portrait-monogram" aria-hidden="true">JN</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="about">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="section-kicker">01 / About</p>
+            <h2>A developer who cares about the whole product.</h2>
+          </div>
+
+          <div class="about-grid">
+            <div class="about-copy reveal">
+              <p>
+                My work sits between product thinking and implementation. I enjoy
+                shaping an interface, connecting it to a dependable backend, and
+                working through the details that make the final experience feel
+                complete.
+              </p>
+              <p>
+                Through academic, client-based, and internship projects, I’ve built
+                responsive applications, authentication and role systems, content
+                workflows, database-backed features, and embedded prototypes. I’m
+                now looking for a team where I can contribute, learn quickly, and
+                grow into a stronger software engineer.
+              </p>
+            </div>
+
+            <div class="capabilities reveal" data-delay="1">
+              <article class="capability-card spotlight-card">
+                <span class="capability-index">01</span>
+                <div>
+                  <h3>Frontend development</h3>
+                  <p>Responsive interfaces with React, JavaScript, HTML, and CSS.</p>
+                </div>
+              </article>
+              <article class="capability-card spotlight-card">
+                <span class="capability-index">02</span>
+                <div>
+                  <h3>Backend &amp; data</h3>
+                  <p>REST APIs, Node.js, Express, MySQL, JWT, and system integration.</p>
+                </div>
+              </article>
+              <article class="capability-card spotlight-card">
+                <span class="capability-index">03</span>
+                <div>
+                  <h3>Connected systems</h3>
+                  <p>ESP32, Arduino, sensors, GPS/GSM modules, and IoT prototyping.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div class="toolkit reveal">
+            <div class="toolkit-header">
+              <p class="toolkit-title">Toolkit</p>
+              <span class="toolkit-subtitle">Technologies &amp; Tools</span>
+            </div>
+            <ul aria-label="Technical toolkit" class="toolkit-tags">
+              <li class="tool-tag">React</li>
+              <li class="tool-tag">Next.js 16</li>
+              <li class="tool-tag">TypeScript</li>
+              <li class="tool-tag">JavaScript (ES6+)</li>
+              <li class="tool-tag">Node.js</li>
+              <li class="tool-tag">Express</li>
+              <li class="tool-tag">PostgreSQL</li>
+              <li class="tool-tag">MySQL</li>
+              <li class="tool-tag">Prisma ORM</li>
+              <li class="tool-tag">Tailwind CSS</li>
+              <li class="tool-tag">REST APIs</li>
+              <li class="tool-tag">JWT Auth</li>
+              <li class="tool-tag">PWA</li>
+              <li class="tool-tag">PHP</li>
+              <li class="tool-tag">WordPress</li>
+              <li class="tool-tag">WooCommerce</li>
+              <li class="tool-tag">ESP32</li>
+              <li class="tool-tag">C / C++</li>
+              <li class="tool-tag">Arduino</li>
+              <li class="tool-tag">GPS / GSM</li>
+              <li class="tool-tag">Figma</li>
+              <li class="tool-tag">Git &amp; GitHub</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section work-section" id="work">
+        <div class="container">
+          <div class="section-heading section-heading-row reveal">
+            <div>
+              <p class="section-kicker">02 / Selected work</p>
+              <h2>Projects built around real needs.</h2>
+            </div>
+            <p class="section-note">
+              A focused selection spanning freelance systems, full-stack
+              development, embedded systems, and school projects.
+            </p>
+          </div>
+
+          <!-- Project Filter Tabs -->
+          <div class="work-filter-wrapper reveal">
+            <div class="work-filter-tabs" role="tablist" aria-label="Filter projects">
+              <button class="filter-tab is-active" data-filter="all" type="button" role="tab" aria-selected="true">
+                All Projects <span class="filter-count">7</span>
+              </button>
+              <button class="filter-tab" data-filter="fullstack" type="button" role="tab" aria-selected="false">
+                Full-Stack <span class="filter-count">3</span>
+              </button>
+              <button class="filter-tab" data-filter="production" type="button" role="tab" aria-selected="false">
+                Production <span class="filter-count">2</span>
+              </button>
+              <button class="filter-tab" data-filter="iot" type="button" role="tab" aria-selected="false">
+                IoT &amp; Hardware <span class="filter-count">2</span>
+              </button>
+              <button class="filter-tab" data-filter="mobile" type="button" role="tab" aria-selected="false">
+                Mobile &amp; UI/UX <span class="filter-count">2</span>
+              </button>
+              <button class="filter-tab" data-filter="cms" type="button" role="tab" aria-selected="false">
+                WordPress &amp; CMS <span class="filter-count">1</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="projects-container" id="project-container">
+            <!-- 1. LANDSCAPES: Web Platforms & Full-Stack Systems -->
+            <div class="project-group" data-group="landscape">
+              <div class="project-group-header reveal">
+                <span class="group-kicker">Web Platforms &amp; Full-Stack Systems</span>
+                <span class="group-rule" aria-hidden="true"></span>
+                <span class="group-count">4 Systems</span>
+              </div>
+
+              <div class="project-grid project-grid-landscape">
+                <!-- Project 1: FCCY Community Platform -->
+                <article class="project-card project-card-landscape spotlight-card reveal" data-category="fullstack">
+                  <div class="project-visual project-visual-landscape project-visual-dark">
+                    <img src="fccy-homepage.png" alt="FCCY community platform homepage" />
+                  </div>
+                  <div class="project-content">
+                    <div class="project-meta">
+                      <span class="meta-tag">Internship · Full-stack</span>
+                      <span class="meta-year">2026</span>
+                    </div>
+                    <h3>FCCY Community Platform</h3>
+                    <p class="project-summary">
+                      A full-stack community platform for the Filipino-Chinese Catholic Youth,
+                      engineered to centralize member engagement, announcements, and events.
+                    </p>
+                    <ul class="project-points">
+                      <li>Secure authentication with JWT and role-based access control</li>
+                      <li>Content publishing workflows for community announcements and events</li>
+                      <li>Responsive frontend backed by Express and a MySQL database</li>
+                    </ul>
+                    <div class="project-footer">
+                      <ul class="project-stack" aria-label="Project technologies">
+                        <li>React</li><li>Node.js</li><li>Express</li><li>MySQL</li><li>JWT</li>
+                      </ul>
+                      <div class="project-action">
+                        <span class="project-note-badge">Clever Kobweb Internship</span>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <!-- Project 2: 4RN Meat Shop System -->
+                <article class="project-card project-card-landscape spotlight-card reveal" data-delay="1" data-category="fullstack production">
+                  <div class="project-visual project-visual-landscape project-visual-4rn project-slideshow" data-slideshow>
+                    <div class="slide-track">
+                      <div class="slide is-active" data-slide>
+                        <img src="4rn-dashboard.png" alt="4RN Meat Shop owner dashboard" />
+                      </div>
+                      <div class="slide" data-slide>
+                        <img src="4rn-POS.png" alt="4RN Meat Shop point-of-sale screen" />
+                      </div>
+                      <div class="slide" data-slide>
+                        <img src="4rn-reports.png" alt="4RN Meat Shop reports screen" />
+                      </div>
+                    </div>
+                    <div class="slideshow-controls" aria-label="4RN Meat Shop screenshot slideshow">
+                      <button type="button" class="slide-button" aria-label="Previous 4RN screenshot" data-slide-prev>&lsaquo;</button>
+                      <div class="slide-dots" data-slide-dots></div>
+                      <button type="button" class="slide-button" aria-label="Next 4RN screenshot" data-slide-next>&rsaquo;</button>
+                    </div>
+                  </div>
+                  <div class="project-content">
+                    <div class="project-meta">
+                      <span class="meta-tag">Freelance · Private</span>
+                      <span class="meta-year">Private</span>
+                    </div>
+                    <h3>4RN Meat Shop System</h3>
+                    <p class="project-summary">
+                      A multi-branch operations and reconciliation platform connecting POS,
+                      inventory, customer credit, daily closing, and reporting across 5 branches.
+                    </p>
+                    <ul class="project-points">
+                      <li>Expected-vs-actual stock and cash reconciliation engine</li>
+                      <li>Fresh, frozen, transferred, and physical inventory tracking</li>
+                      <li>Auditable workflows with server-enforced branch access</li>
+                    </ul>
+                    <p class="deployment-status deployment-status-private"><svg class="private-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> Private</p>
+                    <div class="project-footer">
+                      <ul class="project-stack" aria-label="Project technologies">
+                        <li>Next.js 16</li><li>TypeScript</li><li>PostgreSQL</li><li>Prisma 7</li><li>Tailwind CSS</li>
+                      </ul>
+                      <div class="project-action">
+                        <span class="project-note-badge">Private Client System</span>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <!-- Project 3: OHA Traveller’s Inn System -->
+                <article class="project-card project-card-landscape spotlight-card reveal" data-category="fullstack production">
+                  <div class="project-visual project-visual-landscape project-visual-sand project-slideshow" data-slideshow>
+                    <div class="slide-track">
+                      <div class="slide is-active" data-slide>
+                        <img src="oha-dashboard.png" alt="OHA Traveller's Inn room dashboard" />
+                      </div>
+                      <div class="slide" data-slide>
+                        <img src="oha-store.png" alt="OHA Traveller's Inn store management screen" />
+                      </div>
+                      <div class="slide" data-slide>
+                        <img src="oha-reports.png" alt="OHA Traveller's Inn owner reports screen" />
+                      </div>
+                    </div>
+                    <div class="slideshow-controls" aria-label="OHA Traveller's Inn screenshot slideshow">
+                      <button type="button" class="slide-button" aria-label="Previous OHA screenshot" data-slide-prev>&lsaquo;</button>
+                      <div class="slide-dots" data-slide-dots></div>
+                      <button type="button" class="slide-button" aria-label="Next OHA screenshot" data-slide-next>&rsaquo;</button>
+                    </div>
+                  </div>
+                  <div class="project-content">
+                    <div class="project-meta">
+                      <span class="meta-tag">Freelance · Private</span>
+                      <span class="meta-year">Private</span>
+                    </div>
+                    <h3>OHA Traveller’s Inn System</h3>
+                    <p class="project-summary">
+                      A tablet-optimized motel management system for real front-desk
+                      operations, covering room turnover, stays, store sales, and financial reports.
+                    </p>
+                    <ul class="project-points">
+                      <li>Role-based Owner and Staff front-desk workflows</li>
+                      <li>Historical stay pricing, shift audits, and room status tracking</li>
+                      <li>Responsive PWA deployed with persistent database storage</li>
+                    </ul>
+                    <p class="deployment-status deployment-status-private"><svg class="private-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> Private</p>
+                    <div class="project-footer">
+                      <ul class="project-stack" aria-label="Project technologies">
+                        <li>React</li><li>TypeScript</li><li>Node.js</li><li>Prisma</li><li>MySQL</li><li>PWA</li>
+                      </ul>
+                      <div class="project-action">
+                        <span class="project-note-badge">Private Client System</span>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <!-- Project 4: ADDVentures CMS -->
+                <article class="project-card project-card-landscape spotlight-card reveal" data-delay="1" data-category="cms">
+                  <div class="project-visual project-visual-landscape project-visual-mint">
+                    <img src="addventures.png" alt="ADDVentures Innovation Center website" />
+                  </div>
+                  <div class="project-content">
+                    <div class="project-meta">
+                      <span class="meta-tag">School project</span>
+                      <span class="meta-year">2025</span>
+                    </div>
+                    <h3>ADDVentures CMS</h3>
+                    <p class="project-summary">
+                      A content management and commerce system built for an institutional client,
+                      exploring custom WordPress architecture and multi-vendor directory capabilities.
+                    </p>
+                    <ul class="project-points">
+                      <li>Custom WordPress architecture and WooCommerce integration</li>
+                      <li>Institutional content publishing and multi-vendor showcase</li>
+                      <li>Responsive layouts customized with PHP and MySQL</li>
+                    </ul>
+                    <div class="project-footer">
+                      <ul class="project-stack" aria-label="Project technologies">
+                        <li>WordPress</li><li>WooCommerce</li><li>PHP</li><li>MySQL</li>
+                      </ul>
+                      <div class="project-action">
+                        <a
+                          class="text-link"
+                          href="https://addventures3.arisenlab.org/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <span>Visit website</span>
+                          <span class="link-arrow" aria-hidden="true">↗</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <!-- 2. PORTRAITS: Mobile Interfaces & Hardware Prototypes -->
+            <div class="project-group" data-group="portrait">
+              <div class="project-group-header reveal">
+                <span class="group-kicker">Mobile Interfaces &amp; Hardware Prototypes</span>
+                <span class="group-rule" aria-hidden="true"></span>
+                <span class="group-count">3 Systems</span>
+              </div>
+
+              <div class="project-grid project-grid-portrait">
+                <!-- Project 5: S.H.I.E.L.D. Crash Detection -->
+                <article class="project-card project-card-portrait spotlight-card reveal" data-category="iot">
+                  <div class="project-visual project-visual-portrait project-visual-blue">
+                    <img src="shield.png" alt="S.H.I.E.L.D. crash detection prototype mounted in helmet" />
+                  </div>
+                  <div class="project-content">
+                    <div class="project-meta">
+                      <span class="meta-tag">Capstone project</span>
+                      <span class="meta-year">2025</span>
+                    </div>
+                    <h3>S.H.I.E.L.D. Crash Detection</h3>
+                    <p class="project-summary">
+                      An ESP32-based embedded safety system engineered for motorcycle helmets,
+                      combining motion sensing, GPS tracking, and cellular emergency alerts.
+                    </p>
+                    <ul class="project-points">
+                      <li>Multi-axis collision detection with false-positive filtering</li>
+                      <li>Autonomous GPS positioning and instant GSM SMS dispatch</li>
+                      <li>Compact embedded circuit built for real helmet integration</li>
+                    </ul>
+                    <div class="project-footer">
+                      <ul class="project-stack" aria-label="Project technologies">
+                        <li>ESP32</li><li>GPS/GSM</li><li>IoT</li><li>C++</li>
+                      </ul>
+                      <div class="project-action">
+                        <a
+                          class="text-link"
+                          href="https://www.canva.com/design/DAG3_GwbgJI/YdLwCEmDmDQm9GUP7X0GIw/edit?utm_content=DAG3_GwbgJI&amp;utm_campaign=designshare&amp;utm_medium=link2&amp;utm_source=sharebutton"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <span>View case study</span>
+                          <span class="link-arrow" aria-hidden="true">↗</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <!-- Project 6: CacaoTech Agricultural IoT App -->
+                <article class="project-card project-card-portrait spotlight-card reveal" data-delay="1" data-category="iot mobile">
+                  <div class="project-visual project-visual-portrait project-visual-cacao">
+                    <img src="cacao-tech.png" alt="CacaoTech agricultural IoT mobile interface" />
+                  </div>
+                  <div class="project-content">
+                    <div class="project-meta">
+                      <span class="meta-tag">UI/UX Design</span>
+                      <span class="meta-year">2023</span>
+                    </div>
+                    <h3>CacaoTech Agricultural App</h3>
+                    <p class="project-summary">
+                      A user-centered mobile interface designed for farmers to monitor and control
+                      automated cacao drying chambers with live telemetry and drying presets.
+                    </p>
+                    <ul class="project-points">
+                      <li>Real-time telemetry tracking for chamber temperature and moisture</li>
+                      <li>Variety-specific drying presets (Forastero and Criollo cacao beans)</li>
+                      <li>Push alert workflows for completed batches and threshold limits</li>
+                    </ul>
+                    <div class="project-footer">
+                      <ul class="project-stack" aria-label="Project technologies">
+                        <li>Figma</li><li>Mobile UI/UX</li><li>IoT Interface</li><li>Design System</li>
+                      </ul>
+                      <div class="project-action">
+                        <span class="project-note-badge">UI/UX Concept</span>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <!-- Project 7: UniJobs Campus Job Board -->
+                <article class="project-card project-card-portrait spotlight-card reveal" data-delay="2" data-category="mobile">
+                  <div class="project-visual project-visual-portrait project-visual-unijobs">
+                    <img src="unijobs.png" alt="UniJobs campus job board mobile screen" />
+                  </div>
+                  <div class="project-content">
+                    <div class="project-meta">
+                      <span class="meta-tag">Mobile Design</span>
+                      <span class="meta-year">2024</span>
+                    </div>
+                    <h3>UniJobs Campus Platform</h3>
+                    <p class="project-summary">
+                      A mobile application concept designed to bridge university students with verified
+                      campus jobs, student assistantships, and flexible local employer opportunities.
+                    </p>
+                    <ul class="project-points">
+                      <li>Role-tailored navigation for student applicants and hiring managers</li>
+                      <li>Streamlined application discovery with verified student credentials</li>
+                      <li>Clean mobile navigation architecture built around fast search</li>
+                    </ul>
+                    <div class="project-footer">
+                      <ul class="project-stack" aria-label="Project technologies">
+                        <li>Figma</li><li>Mobile UI/UX</li><li>Prototyping</li><li>Design System</li>
+                      </ul>
+                      <div class="project-action">
+                        <span class="project-note-badge">UI/UX Concept</span>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="experience">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="section-kicker">03 / Experience</p>
+            <h2>Professional experience and education.</h2>
+          </div>
+
+          <div class="experience-layout">
+            <div class="experience-list">
+              <article class="experience-card spotlight-card reveal">
+                <div class="experience-date-col">
+                  <div class="experience-date">2026</div>
+                </div>
+                <div class="experience-copy">
+                  <p class="experience-company">Independent / Freelance</p>
+                  <h3>Freelance Software Developer</h3>
+                  <p>
+                    Designed, developed, tested, and deployed production software for
+                    local businesses, translating operational workflows into secure,
+                    responsive full-stack systems.
+                  </p>
+                  <ul class="experience-bullets">
+                    <li>Built a tablet-first motel operations and reporting system for OHA Traveller’s Inn.</li>
+                    <li>Built a five-branch POS, inventory, and reconciliation platform for 4RN Meat Shop.</li>
+                    <li>Implemented role-based access, business rules, audit history, reports, and production cloud deployments.</li>
+                  </ul>
+                </div>
+              </article>
+
+              <article class="experience-card spotlight-card reveal">
+                <div class="experience-date-col">
+                  <div class="experience-date">Feb — Apr 2026</div>
+                </div>
+                <div class="experience-copy">
+                  <p class="experience-company">Clever Kobweb</p>
+                  <h3>Full-Stack Engineer Intern</h3>
+                  <p>
+                    Contributed across frontend, backend, and database layers of the
+                    FCCY community platform, working with React, Node.js, Express,
+                    MySQL, Axios, and JWT.
+                  </p>
+                  <ul class="experience-bullets">
+                    <li>Implemented authentication and role-based access workflows.</li>
+                    <li>Supported content publishing, announcements, and events.</li>
+                    <li>Collaborated on integration and responsive interface work.</li>
+                  </ul>
+                </div>
+              </article>
+            </div>
+
+            <aside class="education-card spotlight-card reveal" data-delay="1">
+              <p class="section-kicker">Education</p>
+              <div class="education-year">2022 — 2026</div>
+              <h3>Bachelor of Science in Information Technology</h3>
+              <p class="education-school">Ateneo de Davao University</p>
+              <p class="education-detail">
+                Coursework and hands-on projects across web development, databases,
+                embedded systems, and IoT.
+              </p>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact-section" id="contact">
+        <div class="container contact-grid">
+          <div class="reveal">
+            <p class="section-kicker section-kicker-light">04 / Contact</p>
+            <h2>Let’s build something useful.</h2>
+          </div>
+          <div class="contact-copy reveal" data-delay="1">
+            <p>
+              I’m currently open to junior software development and full-stack
+              opportunities. If my work looks relevant to your team, I’d be glad to
+              hear from you.
+            </p>
+
+            <div class="contact-action-wrapper">
+              <a class="contact-email" href="mailto:navarrojustin2026@gmail.com">
+                <span>navarrojustin2026@gmail.com</span>
+                <span class="email-arrow" aria-hidden="true">↗</span>
+              </a>
+              <button
+                class="copy-badge-button"
+                type="button"
+                data-copy="navarrojustin2026@gmail.com"
+                aria-label="Copy email address"
+                title="Copy to clipboard"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span class="copy-text">Copy address</span>
+              </button>
+            </div>
+
+            <div class="social-links">
+              <a href="https://github.com/jjfnavarro" target="_blank" rel="noopener noreferrer" class="social-chip">
+                <span>GitHub</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+              <a href="https://www.linkedin.com/in/justin-john-navarro-9a9852426/" target="_blank" rel="noopener noreferrer" class="social-chip">
+                <span>LinkedIn</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+              <a href="Navarro-Resume.pdf" download class="social-chip">
+                <span>Résumé</span>
+                <span aria-hidden="true">↓</span>
               </a>
             </div>
-            <div class="hero-pills mt-8">
-              <span>React.js</span>
-              <span>Express.js</span>
-              <span>Node.js</span>
-              <span>MySQL</span>
-              <span>REST APIs</span>
-            </div>
-            <div class="mt-12 hero-stats">
-              <div class="stat-card">
-                <div class="stat-number">5+</div>
-                <p>Projects Delivered</p>
-              </div>
-              <div class="stat-card">
-                <div class="stat-number">8+</div>
-                <p>Technologies</p>
-              </div>
-              <div class="stat-card">
-                <div class="stat-number">100%</div>
-                <p>Committed</p>
-              </div>
-            </div>
-          </div>
-          <div class="hero-visual flex justify-center lg:justify-end">
-            <div
-              class="portrait-frame animate-fade-in-up"
-              style="animation-delay: 0.2s"
-            >
-              <div class="portrait-glow"></div>
-              <img src="jj.png" alt="Justin Navarro" class="profile-img" />
-              <div class="floating-card">
-                <p class="floating-label">Open to opportunities</p>
-                <p class="floating-value">Software · Web · Embedded Systems</p>
-              </div>
-            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
 
-    <!-- About Section -->
-    <section id="about" class="py-20 px-6 max-w-6xl mx-auto">
-      <h2 class="section-title mb-16">About Me</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="glass-effect p-8 rounded-lg card-hover md:col-span-2">
-          <p class="text-lg text-gray-700 leading-relaxed mb-6">
-            I am a BS Information Technology graduate from Ateneo de Davao
-            University with experience in front-end and full-stack web
-            development. I enjoy creating responsive and user-friendly
-            applications using JavaScript, React, Node.js, Express.js, and
-            MySQL.
-          </p>
-          <p class="text-lg text-gray-700 leading-relaxed">
-            Aside from web development, I have also worked on projects involving
-            IoT and embedded systems. I enjoy learning new technologies,
-            collaborating with others, and continuously improving my skills as a
-            developer while building solutions that create meaningful impact.
-          </p>
-        </div>
-        <div class="glass-effect p-8 rounded-lg">
-          <h3
-            class="text-xl font-bold mb-6 flex items-center gap-2 text-gray-900"
-          >
-            <i class="fas fa-map-marker-alt text-blue-600"></i> Location
-          </h3>
-          <p class="text-gray-700 mb-6">Davao City, Philippines</p>
-          <h3
-            class="text-xl font-bold mb-6 flex items-center gap-2 text-gray-900"
-          >
-            <i class="fas fa-graduation-cap text-blue-600"></i> Education
-          </h3>
-          <p class="text-gray-700 mb-2">B.S. Information Technology</p>
-          <p class="text-gray-600 text-sm">
-            Ateneo de Davao University (2022-2026)
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills" class="py-20 px-6 max-w-6xl mx-auto">
-      <h2 class="section-title mb-16">Technical Skills</h2>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-        <!-- Embedded Systems -->
-        <div class="glass-effect p-8 rounded-lg card-hover">
-          <h3
-            class="text-xl font-bold mb-6 flex items-center gap-3 text-gray-900"
-          >
-            <i class="fas fa-microchip text-blue-600"></i> Embedded Systems
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="skill-tag px-3 py-2 rounded-full text-sm">ESP32</span>
-            <span class="skill-tag px-3 py-2 rounded-full text-sm"
-              >Arduino</span
-            >
-            <span class="skill-tag px-3 py-2 rounded-full text-sm"
-              >IoT Integration</span
-            >
-            <span class="skill-tag px-3 py-2 rounded-full text-sm"
-              >Sensors & Modules</span
-            >
-          </div>
-        </div>
-
-        <!-- Web Development -->
-        <div class="glass-effect p-8 rounded-lg card-hover">
-          <h3
-            class="text-xl font-bold mb-6 flex items-center gap-3 text-gray-900"
-          >
-            <i class="fas fa-globe text-purple-600"></i> Web Development
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="skill-tag px-3 py-2 rounded-full text-sm">HTML5</span>
-            <span class="skill-tag px-3 py-2 rounded-full text-sm">CSS3</span>
-            <span class="skill-tag px-3 py-2 rounded-full text-sm"
-              >JavaScript</span
-            >
-            <span class="skill-tag px-3 py-2 rounded-full text-sm">React</span>
-            <span class="skill-tag px-3 py-2 rounded-full text-sm"
-              >Node.js</span
-            >
-            <span class="skill-tag px-3 py-2 rounded-full text-sm"
-              >Express.js</span
-            >
-            <span class="skill-tag px-3 py-2 rounded-full text-sm">C++</span>
-            <span class="skill-tag px-3 py-2 rounded-full text-sm"
-              >WordPress</span
-            >
-          </div>
-        </div>
-
-        <!-- Backend & Databases -->
-        <div class="glass-effect p-8 rounded-lg card-hover">
-          <h3
-            class="text-xl font-bold mb-6 flex items-center gap-3 text-gray-900"
-          >
-            <i class="fas fa-server text-cyan-600"></i> Backend & Databases
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="skill-tag px-3 py-2 rounded-full text-sm"
-              >Node.js</span
-            >
-            <span class="skill-tag px-3 py-2 rounded-full text-sm"
-              >Express.js</span
-            >
-            <span class="skill-tag px-3 py-2 rounded-full text-sm">MySQL</span>
-            <span class="skill-tag px-3 py-2 rounded-full text-sm">JWT</span>
-            <span class="skill-tag px-3 py-2 rounded-full text-sm">Axios</span>
-          </div>
-        </div>
-
-        <!-- Design & UI/UX -->
-        <div class="glass-effect p-8 rounded-lg card-hover">
-          <h3
-            class="text-xl font-bold mb-6 flex items-center gap-3 text-gray-900"
-          >
-            <i class="fas fa-palette text-pink-600"></i> Design & UI/UX
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="skill-tag px-3 py-2 rounded-full text-sm">Figma</span>
-            <span class="skill-tag px-3 py-2 rounded-full text-sm"
-              >Mobile Design</span
-            >
-            <span class="skill-tag px-3 py-2 rounded-full text-sm"
-              >Responsive Design</span
-            >
-            <span class="skill-tag px-3 py-2 rounded-full text-sm"
-              >UX Principles</span
-            >
-          </div>
-        </div>
-
-        <!-- Tools & Version Control -->
-        <div class="glass-effect p-8 rounded-lg card-hover">
-          <h3
-            class="text-xl font-bold mb-6 flex items-center gap-3 text-gray-900"
-          >
-            <i class="fas fa-wrench text-orange-600"></i> Tools & VCS
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="skill-tag px-3 py-2 rounded-full text-sm"
-              >Git/GitHub</span
-            >
-            <span class="skill-tag px-3 py-2 rounded-full text-sm"
-              >VS Code</span
-            >
-            <span class="skill-tag px-3 py-2 rounded-full text-sm">Docker</span>
-            <span class="skill-tag px-3 py-2 rounded-full text-sm">CI/CD</span>
-          </div>
-        </div>
-
-        <!-- Core Competencies -->
-        <div class="glass-effect p-8 rounded-lg card-hover">
-          <h3
-            class="text-xl font-bold mb-6 flex items-center gap-3 text-gray-900"
-          >
-            <i class="fas fa-star text-yellow-600"></i> Core Competencies
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="skill-tag px-3 py-2 rounded-full text-sm"
-              >Problem Solving</span
-            >
-            <span class="skill-tag px-3 py-2 rounded-full text-sm"
-              >Project Management</span
-            >
-            <span class="skill-tag px-3 py-2 rounded-full text-sm"
-              >Team Collaboration</span
-            >
-            <span class="skill-tag px-3 py-2 rounded-full text-sm"
-              >Documentation</span
-            >
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="py-20 px-6 max-w-6xl mx-auto">
-      <h2 class="section-title mb-16">Featured Projects</h2>
-
-      <div class="space-y-8">
-        <!-- Project 1: S.H.I.E.L.D. -->
-        <div class="project-card rounded-lg overflow-hidden card-hover">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
-            <div class="md:col-span-2 p-8">
-              <div class="flex items-center gap-3 mb-4">
-                <i class="fas fa-satellite text-blue-600 text-2xl"></i>
-                <h3 class="text-2xl font-bold text-gray-900">
-                  S.H.I.E.L.D. IoT Crash Detection System
-                </h3>
-              </div>
-              <p class="text-gray-600 mb-4">
-                Capstone Project | January 2025 - December 2025
-              </p>
-              <p class="text-gray-700 mb-6 leading-relaxed">
-                Advanced IoT system designed to detect vehicle crashes in
-                real-time using accelerometers, GPS, and cellular modules.
-                Achieved 100% crash detection accuracy in controlled testing
-                environments.
-              </p>
-              <div class="mb-6">
-                <p class="text-sm font-semibold text-gray-700 mb-2">
-                  Key Technologies:
-                </p>
-                <div class="flex flex-wrap gap-2">
-                  <span class="tech-badge">ESP32</span>
-                  <span class="tech-badge">IoT</span>
-                  <span class="tech-badge">GPS/GSM</span>
-                  <span class="tech-badge">Embedded Systems</span>
-                  <span class="tech-badge">Real-time Processing</span>
-                </div>
-              </div>
-              <div class="flex gap-4">
-                <a
-                  href="https://www.canva.com/design/DAG3_GwbgJI/YdLwCEmDmDQm9GUP7X0GIw/edit?utm_content=DAG3_GwbgJI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-2"
-                >
-                  <i class="fas fa-code-branch"></i> View Details
-                </a>
-              </div>
-            </div>
-            <div
-              class="bg-gradient-to-br from-blue-100 to-purple-100 p-8 flex items-center justify-center"
-            >
-              <img
-                src="shield.png"
-                alt="S.H.I.E.L.D. IoT crash detection prototype"
-                class="w-full max-w-md md:max-w-lg object-contain rounded-lg shadow-lg"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 2: OHA Traveller's Inn -->
-        <div class="project-card rounded-lg overflow-hidden card-hover">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
-            <div class="md:col-span-2 p-8">
-              <div class="flex items-center gap-3 mb-4">
-                <i class="fas fa-hotel text-cyan-600 text-2xl"></i>
-                <h3 class="text-2xl font-bold text-gray-900">
-                  OHA Traveller's Inn Management System
-                </h3>
-              </div>
-              <p class="text-gray-600 mb-4">
-                SIA Project | September 2024 - March 2025
-              </p>
-              <p class="text-gray-700 mb-6 leading-relaxed">
-                Full-featured hospitality management system with responsive
-                booking interface and real-time room management. Developed
-                intuitive frontend for seamless guest and staff interactions.
-              </p>
-              <div class="mb-6">
-                <p class="text-sm font-semibold text-gray-700 mb-2">
-                  Key Technologies:
-                </p>
-                <div class="flex flex-wrap gap-2">
-                  <span class="tech-badge">React</span>
-                  <span class="tech-badge">HTML5/CSS3</span>
-                  <span class="tech-badge">JavaScript</span>
-                  <span class="tech-badge">Responsive Design</span>
-                  <span class="tech-badge">Frontend Development</span>
-                </div>
-              </div>
-              <div class="flex gap-4">
-                <a
-                  href="https://www.canva.com/design/DAGXx7SDAKo/Ld_tW-RNYeVEvMDkD-8r8g/edit?utm_content=DAGXx7SDAKo&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-2"
-                >
-                  <i class="fas fa-code-branch"></i> View Details
-                </a>
-              </div>
-            </div>
-            <div
-              class="bg-gradient-to-br from-cyan-100 to-blue-100 p-8 flex items-center justify-center"
-            >
-              <img
-                src="ohatravellersinn_system.png"
-                alt="OHA Traveller's Inn System Interface"
-                class="w-full max-w-md md:max-w-lg object-contain rounded-lg shadow-lg"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 3: ADDVentures CMS -->
-        <div class="project-card rounded-lg overflow-hidden card-hover">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
-            <div class="md:col-span-2 p-8">
-              <div class="flex items-center gap-3 mb-4">
-                <i class="fas fa-database text-purple-600 text-2xl"></i>
-                <h3 class="text-2xl font-bold text-gray-900">
-                  ADDVentures Innovation Center CMS
-                </h3>
-              </div>
-              <p class="text-gray-600 mb-4">Academic Project | 2025</p>
-              <p class="text-gray-700 mb-6 leading-relaxed">
-                WordPress-based content management system with WooCommerce
-                integration for institutional client. Managed custom plugin
-                development and multi-vendor functionality.
-              </p>
-              <div class="mb-6">
-                <p class="text-sm font-semibold text-gray-700 mb-2">
-                  Key Technologies:
-                </p>
-                <div class="flex flex-wrap gap-2">
-                  <span class="tech-badge">WordPress</span>
-                  <span class="tech-badge">WooCommerce</span>
-                  <span class="tech-badge">PHP</span>
-                  <span class="tech-badge">MySQL</span>
-                  <span class="tech-badge">CMS Development</span>
-                </div>
-              </div>
-              <div class="flex gap-4">
-                <a
-                  href="https://addventures3.arisenlab.org/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-2"
-                >
-                  <i class="fas fa-code-branch"></i> View Details
-                </a>
-              </div>
-            </div>
-            <div
-              class="bg-gradient-to-br from-purple-100 to-pink-100 p-8 flex items-center justify-center"
-            >
-              <img
-                src="addventures.png"
-                alt="ADDVentures WordPress CMS"
-                class="w-full max-w-md md:max-w-lg object-contain rounded-lg shadow-lg"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 4: FCCY Community Platform -->
-        <div class="project-card rounded-lg overflow-hidden card-hover">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
-            <div class="md:col-span-2 p-8">
-              <div class="flex items-center gap-3 mb-4">
-                <i class="fas fa-users text-teal-600 text-2xl"></i>
-                <h3 class="text-2xl font-bold text-gray-900">
-                  FCCY Community Platform
-                </h3>
-              </div>
-              <p class="text-gray-600 mb-4">
-                Internship Project | February 2026 - April 2026
-              </p>
-              <p class="text-gray-700 mb-6 leading-relaxed">
-                Full-stack community platform developed for the Filipino-Chinese
-                Catholic Youth (FCCY) Philippines to improve communication,
-                member engagement, and event management. Built secure
-                authentication, role-based access control, announcements,
-                content management, and event organization in a responsive and
-                user-friendly interface.
-              </p>
-              <div class="mb-6">
-                <p class="text-sm font-semibold text-gray-700 mb-2">
-                  Key Technologies:
-                </p>
-                <div class="flex flex-wrap gap-2">
-                  <span class="tech-badge">React</span>
-                  <span class="tech-badge">Node.js</span>
-                  <span class="tech-badge">Express.js</span>
-                  <span class="tech-badge">MySQL</span>
-                  <span class="tech-badge">Axios</span>
-                  <span class="tech-badge">JWT</span>
-                </div>
-              </div>
-              <div class="flex gap-4">
-                <span
-                  class="text-teal-600 font-semibold flex items-center gap-2"
-                >
-                  <i class="fas fa-briefcase"></i> Internship Experience
-                </span>
-              </div>
-            </div>
-            <div
-              class="bg-gradient-to-br from-teal-100 to-cyan-100 p-8 flex items-center justify-center"
-            >
-              <img
-                src="fccy-homepage.png"
-                alt="FCCY community platform homepage screenshot"
-                class="w-full max-w-md md:max-w-lg object-contain rounded-lg shadow-lg"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 5: CacaoTech -->
-        <div class="project-card rounded-lg overflow-hidden card-hover">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
-            <div class="md:col-span-2 p-8">
-              <div class="flex items-center gap-3 mb-4">
-                <i class="fas fa-leaf text-green-600 text-2xl"></i>
-                <h3 class="text-2xl font-bold text-gray-900">
-                  CacaoTech - Agricultural IoT Mobile App
-                </h3>
-              </div>
-              <p class="text-gray-600 mb-4">UI/UX Design Project | 2023</p>
-              <p class="text-gray-700 mb-6 leading-relaxed">
-                Designed intuitive Figma interface for mobile application
-                controlling automated cacao dryer systems. Created user-centric
-                design connecting IoT hardware with mobile controls.
-              </p>
-              <div class="mb-6">
-                <p class="text-sm font-semibold text-gray-700 mb-2">
-                  Key Technologies:
-                </p>
-                <div class="flex flex-wrap gap-2">
-                  <span class="tech-badge">Figma</span>
-                  <span class="tech-badge">UI/UX Design</span>
-                  <span class="tech-badge">Mobile App Design</span>
-                  <span class="tech-badge">IoT Integration</span>
-                  <span class="tech-badge">Prototyping</span>
-                </div>
-              </div>
-              <div class="flex gap-4">
-                <a
-                  href="https://www.figma.com/design/cMZDQVqR8eJ0MSBvrLGANU/Team-CJ?node-id=118-86&t=UR8IZhR36R5vZjxy-1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-2"
-                >
-                  <i class="fas fa-code-branch"></i> View Details
-                </a>
-              </div>
-            </div>
-            <div
-              class="bg-gradient-to-br from-green-100 to-emerald-100 p-8 flex items-center justify-center"
-            >
-              <img
-                src="cacao-tech.png"
-                alt="CacaoTech UI"
-                class="w-full max-w-md md:max-w-lg object-contain rounded-lg shadow-lg"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 6: UniJobs -->
-        <div class="project-card rounded-lg overflow-hidden card-hover">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
-            <div class="md:col-span-2 p-8">
-              <div class="flex items-center gap-3 mb-4">
-                <i class="fas fa-briefcase text-indigo-600 text-2xl"></i>
-                <h3 class="text-2xl font-bold text-gray-900">
-                  UniJobs - Campus Job Board App
-                </h3>
-              </div>
-              <p class="text-gray-600 mb-4">Mobile App Design Project | 2024</p>
-              <p class="text-gray-700 mb-6 leading-relaxed">
-                Designed comprehensive UI/UX for job posting and
-                student-employer matching platform. Created seamless interface
-                for job discovery and application submission.
-              </p>
-              <div class="mb-6">
-                <p class="text-sm font-semibold text-gray-700 mb-2">
-                  Key Technologies:
-                </p>
-                <div class="flex flex-wrap gap-2">
-                  <span class="tech-badge">Figma</span>
-                  <span class="tech-badge">Mobile Design</span>
-                  <span class="tech-badge">User Research</span>
-                  <span class="tech-badge">Wireframing</span>
-                  <span class="tech-badge">Design Systems</span>
-                </div>
-              </div>
-              <div class="flex gap-4">
-                <a
-                  href="https://www.figma.com/design/iETYFKuZagB6rSpEt9hZvi/CampusJobBoard?node-id=3-3&t=XTnvGcLubuj1MLER-1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-2"
-                >
-                  <i class="fas fa-code-branch"></i> View Details
-                </a>
-              </div>
-            </div>
-            <div
-              class="bg-gradient-to-br from-indigo-100 to-purple-100 p-8 flex items-center justify-center"
-            >
-              <img
-                src="unijobs.png"
-                alt="Campus Job Board UI"
-                class="w-full max-w-md md:max-w-lg object-contain rounded-lg shadow-lg"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section id="experience" class="py-20 px-6 max-w-6xl mx-auto">
-      <h2 class="section-title mb-16">Professional Experience</h2>
-
-      <div class="space-y-8">
-        <div class="timeline-item">
-          <h3 class="text-2xl font-bold mb-2 text-gray-900">
-            OHA Traveller's Inn - Hospitality Management System
-          </h3>
-          <p class="text-blue-600 font-semibold mb-4 flex items-center gap-2">
-            <i class="fas fa-calendar"></i> SIA Project | September 2024 - March
-            2025
-          </p>
-          <p class="text-gray-700 mb-4 leading-relaxed">
-            Developed responsive frontend interface for comprehensive
-            hospitality management system. Created intuitive booking system and
-            room management interface for both guests and staff.
-          </p>
-          <ul class="list-none space-y-2 text-gray-700">
-            <li class="flex items-start gap-3">
-              <i class="fas fa-check text-blue-600 mt-1"></i>
-              <span
-                >Designed responsive user interface with modern design
-                principles</span
-              >
-            </li>
-            <li class="flex items-start gap-3">
-              <i class="fas fa-check text-blue-600 mt-1"></i>
-              <span
-                >Implemented real-time booking system with availability
-                tracking</span
-              >
-            </li>
-            <li class="flex items-start gap-3">
-              <i class="fas fa-check text-blue-600 mt-1"></i>
-              <span
-                >Created interactive dashboard for staff management
-                operations</span
-              >
-            </li>
-          </ul>
-        </div>
-
-        <div class="timeline-item">
-          <h3 class="text-2xl font-bold mb-2 text-gray-900">
-            S.H.I.E.L.D. - IoT Crash Detection System
-          </h3>
-          <p class="text-blue-600 font-semibold mb-4 flex items-center gap-2">
-            <i class="fas fa-calendar"></i> Capstone Project | January 2025 -
-            December 2025
-          </p>
-          <p class="text-gray-700 mb-4 leading-relaxed">
-            Led development of an advanced IoT system integrating ESP32
-            microcontroller, accelerometer, GPS, and cellular modules for
-            real-time vehicle crash detection. Achieved 100% crash detection
-            accuracy in controlled testing environments.
-          </p>
-          <ul class="list-none space-y-2 text-gray-700">
-            <li class="flex items-start gap-3">
-              <i class="fas fa-check text-blue-600 mt-1"></i>
-              <span
-                >Developed and integrated multiple IoT sensors and communication
-                protocols</span
-              >
-            </li>
-            <li class="flex items-start gap-3">
-              <i class="fas fa-check text-blue-600 mt-1"></i>
-              <span
-                >Implemented real-time data processing and alert system</span
-              >
-            </li>
-            <li class="flex items-start gap-3">
-              <i class="fas fa-check text-blue-600 mt-1"></i>
-              <span
-                >Conducted comprehensive testing achieving 100% accuracy</span
-              >
-            </li>
-          </ul>
-        </div>
-
-        <div class="timeline-item">
-          <h3 class="text-2xl font-bold mb-2 text-gray-900">
-            ADDVentures Innovation Center CMS
-          </h3>
-          <p class="text-blue-600 font-semibold mb-4 flex items-center gap-2">
-            <i class="fas fa-calendar"></i> Academic Project | 2025
-          </p>
-          <p class="text-gray-700 mb-4 leading-relaxed">
-            Developed WordPress-based content management system with WooCommerce
-            integration for institutional client. Managed plugin development,
-            database optimization, and multi-vendor functionality.
-          </p>
-          <ul class="list-none space-y-2 text-gray-700">
-            <li class="flex items-start gap-3">
-              <i class="fas fa-check text-blue-600 mt-1"></i>
-              <span>Customized WordPress plugins and theme modifications</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <i class="fas fa-check text-blue-600 mt-1"></i>
-              <span
-                >Implemented WooCommerce integration for e-commerce
-                functionality</span
-              >
-            </li>
-            <li class="flex items-start gap-3">
-              <i class="fas fa-check text-blue-600 mt-1"></i>
-              <span>Optimized database performance and system scalability</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="timeline-item">
-          <h3 class="text-2xl font-bold mb-2 text-gray-900">
-            Clever Kobweb - Full Stack Engineer Intern
-          </h3>
-          <p class="text-blue-600 font-semibold mb-4 flex items-center gap-2">
-            <i class="fas fa-calendar"></i> Internship | February 2026 - April
-            2026
-          </p>
-          <p class="text-gray-700 mb-4 leading-relaxed">
-            Worked on the FCCY community platform for the Filipino-Chinese
-            Catholic Youth (FCCY) Philippines to improve communication, member
-            engagement, and event management. Contributed to a responsive
-            full-stack web application built with React, Node.js, Express.js,
-            MySQL, Axios, and JSON Web Tokens (JWT).
-          </p>
-          <ul class="list-none space-y-2 text-gray-700">
-            <li class="flex items-start gap-3">
-              <i class="fas fa-check text-blue-600 mt-1"></i>
-              <span
-                >Implemented secure authentication and role-based access
-                control</span
-              >
-            </li>
-            <li class="flex items-start gap-3">
-              <i class="fas fa-check text-blue-600 mt-1"></i>
-              <span
-                >Supported content management, announcements, and event
-                organization features</span
-              >
-            </li>
-            <li class="flex items-start gap-3">
-              <i class="fas fa-check text-blue-600 mt-1"></i>
-              <span
-                >Collaborated on frontend, backend, and database integration for
-                a user-friendly experience</span
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- Education Section -->
-    <section class="py-20 px-6 max-w-6xl mx-auto">
-      <h2 class="section-title mb-16">Education</h2>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="glass-effect p-8 rounded-lg card-hover">
-          <div class="flex items-start gap-4 mb-6">
-            <div
-              class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center"
-            >
-              <i class="fas fa-university text-blue-600 text-xl"></i>
-            </div>
-            <div>
-              <h3 class="text-xl font-bold text-gray-900">
-                Bachelor of Science in Information Technology
-              </h3>
-              <p class="text-blue-600 font-semibold">
-                Ateneo de Davao University
-              </p>
-              <p class="text-gray-600 text-sm">2022 - 2026</p>
-            </div>
-          </div>
-          <p class="text-gray-700">
-            Comprehensive program covering embedded systems, IoT, and web
-            development with hands-on project experience.
-          </p>
-        </div>
-
-        <div class="glass-effect p-8 rounded-lg card-hover">
-          <div class="flex items-start gap-4 mb-6">
-            <div
-              class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center"
-            >
-              <i class="fas fa-book text-purple-600 text-xl"></i>
-            </div>
-            <div>
-              <h3 class="text-xl font-bold text-gray-900">
-                Senior High School
-              </h3>
-              <p class="text-purple-600 font-semibold">
-                Maryknoll College of Panabo Inc.
-              </p>
-              <p class="text-gray-600 text-sm">2020 - 2022</p>
-            </div>
-          </div>
-          <p class="text-gray-700">
-            General Academic Strand providing a strong foundation in science,
-            mathematics, and critical thinking skills essential for IT
-            discipline.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 px-6 max-w-6xl mx-auto">
-      <h2 class="section-title mb-16">Get In Touch</h2>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div>
-          <p class="text-xl text-gray-700 mb-8 leading-relaxed">
-            I'm always open to discussing new projects, opportunities, and
-            technology. Feel free to reach out through any of the channels
-            below.
-          </p>
-
-          <div class="space-y-6">
-            <div class="contact-info-item">
-              <div class="contact-icon">
-                <i class="fas fa-envelope"></i>
-              </div>
-              <div>
-                <p class="font-semibold text-gray-900">Email</p>
-                <a
-                  href="mailto:navarrojustin2026@gmail.com"
-                  class="text-blue-600 hover:text-blue-700"
-                  >navarrojustin2026@gmail.com</a
-                >
-              </div>
-            </div>
-
-            <div class="contact-info-item">
-              <div class="contact-icon">
-                <i class="fas fa-phone"></i>
-              </div>
-              <div>
-                <p class="font-semibold text-gray-900">Phone</p>
-                <a
-                  href="tel:+639617244460"
-                  class="text-blue-600 hover:text-blue-700"
-                  >+63 961 724 4460</a
-                >
-              </div>
-            </div>
-
-            <div class="contact-info-item">
-              <div class="contact-icon">
-                <i class="fas fa-map-marker-alt"></i>
-              </div>
-              <div>
-                <p class="font-semibold text-gray-900">Location</p>
-                <p class="text-gray-700">Davao City, Philippines</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="glass-effect p-8 rounded-lg flex flex-col justify-center items-center text-center"
-        >
-          <p class="font-semibold text-gray-900 mb-8 text-lg">Follow Me</p>
-          <div class="flex gap-6 justify-center flex-wrap">
-            <a
-              href="https://github.com/jjfnavarro"
-              target="_blank"
-              class="w-16 h-16 glass-effect rounded-lg flex items-center justify-center text-blue-600 hover:text-blue-700 hover:border-blue-400 transition-all"
-            >
-              <i class="fab fa-github text-3xl"></i>
-            </a>
-            <a
-              href="https://www.linkedin.com/in/justin-john-navarro-9a9852426/"
-              target="_blank"
-              class="w-16 h-16 glass-effect rounded-lg flex items-center justify-center text-blue-600 hover:text-blue-700 hover:border-blue-400 transition-all"
-            >
-              <i class="fab fa-linkedin text-3xl"></i>
-            </a>
-            <a
-              href="https://www.facebook.com/justin.navarro.588564"
-              target="_blank"
-              class="w-16 h-16 glass-effect rounded-lg flex items-center justify-center text-blue-600 hover:text-blue-700 hover:border-blue-400 transition-all"
-            >
-              <i class="fab fa-facebook text-3xl"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="border-t border-gray-300 mt-20 py-12 px-6 bg-white">
-      <div class="max-w-6xl mx-auto text-center">
-        <p class="text-gray-600 mb-4">
-          <i class="fas fa-code"></i> Turning ideas into software, one project
-          at a time.
-        </p>
-        <p class="text-gray-500 text-sm">
-          © 2026 Justin John F. Navarro | Junior Full-Stack Developer
-        </p>
+    <footer class="site-footer">
+      <div class="container footer-row">
+        <p>© <span data-year>2026</span> Justin John F. Navarro</p>
+        <p>Designed and built in Davao City.</p>
       </div>
     </footer>
 
-    <script>
-      // Smooth scrolling for navigation links
-      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-        anchor.addEventListener("click", function (e) {
-          e.preventDefault();
-          const target = document.querySelector(this.getAttribute("href"));
-          if (target) {
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
-          }
-        });
-      });
+    <!-- Back to Top Button -->
+    <button class="back-to-top-btn" id="back-to-top" type="button" aria-label="Back to top of page">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+    </button>
 
-      const contactForm = document.getElementById("contactForm");
-      if (contactForm) {
-        contactForm.addEventListener("submit", function (e) {
-          e.preventDefault();
-
-          const name = document.getElementById("name").value;
-          const email = document.getElementById("email").value;
-          const subject = document.getElementById("subject").value;
-          const message = document.getElementById("message").value;
-
-          const mailtoLink = `mailto:navarrojustin2026@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
-
-          window.location.href = mailtoLink;
-        });
-      }
-
-      // Animate elements on scroll
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: "0px 0px -100px 0px",
-      };
-
-      const observer = new IntersectionObserver(function (entries) {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.style.animation = "fadeInUp 0.8s ease-out forwards";
-            observer.unobserve(entry.target);
-          }
-        });
-      }, observerOptions);
-
-      // Observe all project cards and experience items
-      document
-        .querySelectorAll(
-          ".project-card, .experience-item, .glass-effect, .stat-card, .hero-pills span",
-        )
-        .forEach((el) => {
-          observer.observe(el);
-        });
-
-      // Navbar background on scroll
-      window.addEventListener("scroll", function () {
-        const header = document.querySelector("header");
-        if (window.scrollY > 50) {
-          header.style.background = "rgba(248, 249, 250, 0.95)";
-          header.style.borderBottomColor = "rgba(59, 130, 246, 0.15)";
-        } else {
-          header.style.background = "rgba(248, 249, 250, 0.85)";
-          header.style.borderBottomColor = "rgba(59, 130, 246, 0.1)";
-        }
-      });
-    </script>
+    <!-- Global Toast Notification (Clean, no emojis) -->
+    <div class="floating-toast" id="toast" role="status" aria-live="polite" aria-hidden="true">
+      <span class="toast-message">Copied to clipboard</span>
+    </div>
   </body>
 </html>
