@@ -1,7 +1,7 @@
 /* ==========================================================================
    JUSTIN NAVARRO - PORTFOLIO INTERACTIVE SCRIPT
-   Features: Theme Switcher, Live Davao Clock, Command Palette (Ctrl+K),
-   Spotlight Cards, Project Filters, Slideshow, Lightbox, Copy Toast, Progress
+   Features: Theme Switcher, Live Davao Clock, Mobile Navigation, Scroll Motion,
+   Spotlight Cards, Project Carousels, Screenshots, Lightbox, Copy Toast, Progress
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -103,26 +103,67 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================================
   // 5. MOBILE MENU
   // ==========================================
+  const mobileMenuQuery = window.matchMedia("(max-width: 820px)");
+  let menuScrollPosition = 0;
+
+  const setMenuOpen = (isOpen) => {
+    const wasOpen = document.body.classList.contains("menu-open");
+    if (isOpen && !wasOpen) {
+      menuScrollPosition = window.scrollY;
+      document.body.style.top = `-${menuScrollPosition}px`;
+    }
+
+    menuButton?.setAttribute("aria-expanded", String(isOpen));
+    menuButton?.setAttribute("aria-label", isOpen ? "Close navigation" : "Open navigation");
+    navigation?.classList.toggle("is-open", isOpen);
+    document.body.classList.toggle("menu-open", isOpen);
+    if (navigation) navigation.inert = mobileMenuQuery.matches && !isOpen;
+    document.querySelector("main")?.toggleAttribute("inert", isOpen);
+    document.querySelector(".site-footer")?.toggleAttribute("inert", isOpen);
+
+    if (!isOpen && wasOpen) {
+      document.body.style.top = "";
+      window.scrollTo({ top: menuScrollPosition, behavior: "instant" });
+      handleScroll();
+    }
+  };
+
   const closeMenu = () => {
-    menuButton?.setAttribute("aria-expanded", "false");
-    menuButton?.setAttribute("aria-label", "Open navigation");
-    navigation?.classList.remove("is-open");
-    document.body.classList.remove("menu-open");
+    setMenuOpen(false);
   };
 
   menuButton?.addEventListener("click", () => {
     const isOpen = menuButton.getAttribute("aria-expanded") === "true";
-    menuButton.setAttribute("aria-expanded", String(!isOpen));
-    menuButton.setAttribute("aria-label", isOpen ? "Open navigation" : "Close navigation");
-    navigation?.classList.toggle("is-open", !isOpen);
-    document.body.classList.toggle("menu-open", !isOpen);
+    setMenuOpen(!isOpen);
   });
 
   navLinks?.forEach((link) => link.addEventListener("click", closeMenu));
+  header?.querySelector(".brand")?.addEventListener("click", closeMenu);
+
+  document.addEventListener("keydown", (event) => {
+    if (!document.body.classList.contains("menu-open")) return;
+    if (event.key === "Escape") {
+      closeMenu();
+      menuButton?.focus({ preventScroll: true });
+    } else if (event.key === "Tab") {
+      const controls = Array.from(header.querySelectorAll("a, button"));
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    }
+  });
 
   window.addEventListener("resize", () => {
-    if (window.innerWidth > 820) closeMenu();
+    if (!mobileMenuQuery.matches) closeMenu();
+    if (navigation) navigation.inert = mobileMenuQuery.matches && !document.body.classList.contains("menu-open");
   });
+  closeMenu();
 
   // ==========================================
   // 6. SPOTLIGHT EFFECT ON CARDS
@@ -207,13 +248,6 @@ document.addEventListener("DOMContentLoaded", () => {
           card.style.opacity = "";
           card.style.transform = "";
           card.style.transition = "";
-
-          // Ensure active slide in any slideshow is visible
-          const activeSlide = card.querySelector(".slide.is-active");
-          if (activeSlide) {
-            activeSlide.style.visibility = "visible";
-            activeSlide.style.opacity = "1";
-          }
         } else {
           card.classList.add("is-hidden");
         }
@@ -224,6 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const visibleCount = group.querySelectorAll(".project-card:not(.is-hidden), .project:not(.is-hidden)").length;
         group.classList.toggle("is-hidden", visibleCount === 0);
       });
+      document.dispatchEvent(new Event("portfolio:projectfilterchange"));
     });
   });
 
@@ -277,6 +312,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const isActive = slideIndex === activeIndex;
         slide.classList.toggle("is-active", isActive);
         slide.setAttribute("aria-hidden", String(!isActive));
+        slide.inert = !isActive;
       });
 
       dots.forEach((dot, dotIndex) => {
@@ -289,6 +325,199 @@ document.addEventListener("DOMContentLoaded", () => {
     previousButton?.addEventListener("click", () => showSlide(activeIndex - 1));
     nextButton?.addEventListener("click", () => showSlide(activeIndex + 1));
     showSlide(activeIndex);
+  });
+
+  // Loop original project cards so screenshots and links keep their handlers.
+  document.querySelectorAll("#project-container .project-grid").forEach((carousel) => {
+    const cards = Array.from(carousel.children);
+    const group = carousel.closest(".project-group");
+    const label = group.querySelector(".group-kicker").textContent;
+    const viewport = document.createElement("div");
+    viewport.className = "project-carousel-viewport reveal";
+    if (group.dataset.group === "portrait") viewport.dataset.delay = "1";
+    const track = document.createElement("div");
+    track.className = "project-carousel-track";
+    cards.forEach((card) => card.classList.remove("reveal", "is-visible"));
+    track.append(...cards);
+    viewport.append(track);
+    carousel.classList.add("project-carousel");
+    carousel.setAttribute("role", "region");
+    carousel.setAttribute("aria-roledescription", "carousel");
+    carousel.setAttribute("aria-label", label);
+    const controls = document.createElement("div");
+    controls.className = "project-carousel-controls";
+    controls.innerHTML = `
+      <button class="slide-button" type="button" data-project-prev aria-label="Previous project">&lsaquo;</button>
+      <span class="project-carousel-count" aria-live="off"></span>
+      <button class="slide-button" type="button" data-project-next aria-label="Next project">&rsaquo;</button>
+      <button class="slide-button" type="button" data-project-pause></button>
+    `;
+    carousel.append(viewport, controls);
+    const previous = controls.querySelector("[data-project-prev]");
+    const next = controls.querySelector("[data-project-next]");
+    const pause = controls.querySelector("[data-project-pause]");
+    const count = controls.querySelector(".project-carousel-count");
+    let isPaused = false;
+    let playRequested = false;
+    let isHovered = false;
+    let isTouching = false;
+    let isInView = !("IntersectionObserver" in window);
+    let isMoving = false;
+    let movingCard;
+    let moveDirection;
+    let autoplayTimer;
+    let moveTimer;
+    let touchStart;
+    let swiped = false;
+    let swipeClickTimer;
+    let lastCarouselWidth = carousel.clientWidth;
+    const visibleCards = () => Array.from(track.children).filter((card) => !card.classList.contains("is-hidden"));
+    const columns = () => Number(getComputedStyle(carousel).getPropertyValue("--carousel-columns")) || 1;
+
+    const updateState = () => {
+      const eligible = cards.filter((card) => !card.classList.contains("is-hidden"));
+      const ordered = visibleCards();
+      const displayed = new Set(ordered.slice(0, columns()));
+      cards.forEach((card) => {
+        card.inert = !displayed.has(card);
+        card.setAttribute("aria-hidden", String(!displayed.has(card)));
+      });
+      count.textContent = `${eligible.indexOf(ordered[0]) + 1} / ${eligible.length}`;
+      controls.hidden = eligible.length <= columns();
+      pause.setAttribute("aria-label", isPaused ? "Play project carousel" : "Pause project carousel");
+      pause.title = isPaused ? "Play carousel" : "Pause carousel";
+      pause.innerHTML = isPaused
+        ? '<svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2l9 6-9 6z"/></svg>'
+        : '<svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2h3v12H4zM9 2h3v12H9z"/></svg>';
+    };
+    const updateAutoplay = () => {
+      clearTimeout(autoplayTimer);
+      if (!isInView || isPaused || isTouching || isMoving || document.hidden
+        || visibleCards().length <= columns()
+        || (!playRequested && (isHovered || carousel.contains(document.activeElement)))
+        || document.body.classList.contains("menu-open")
+        || document.querySelector(".image-lightbox[open]")) return;
+      autoplayTimer = setTimeout(() => move("next"), 8000);
+    };
+    const resetPosition = () => {
+      track.classList.add("is-resetting");
+      track.style.transform = "translateX(0)";
+      void track.offsetWidth;
+      track.classList.remove("is-resetting");
+    };
+    const finishMove = () => {
+      if (!isMoving) return;
+      clearTimeout(moveTimer);
+      if (moveDirection === "next") track.append(movingCard);
+      resetPosition();
+      isMoving = false;
+      updateState();
+      updateAutoplay();
+    };
+    const move = (direction) => {
+      const ordered = visibleCards();
+      if (isMoving || ordered.length <= columns()) return;
+      clearTimeout(autoplayTimer);
+      isMoving = true;
+      moveDirection = direction;
+      const step = ordered[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).gap);
+      if (direction === "previous") {
+        track.classList.add("is-resetting");
+        track.prepend(ordered[ordered.length - 1]);
+        track.style.transform = `translateX(-${step}px)`;
+        void track.offsetWidth;
+        track.classList.remove("is-resetting");
+        track.style.transform = "translateX(0)";
+      } else {
+        movingCard = ordered[0];
+        track.style.transform = `translateX(-${step}px)`;
+      }
+      moveTimer = setTimeout(finishMove, 1600);
+    };
+    const resetCarousel = (restoreOrder = false) => {
+      clearTimeout(moveTimer);
+      isMoving = false;
+      if (restoreOrder) track.append(...cards);
+      resetPosition();
+      updateState();
+      updateAutoplay();
+    };
+    track.addEventListener("transitionend", (event) => {
+      if (event.target === track && event.propertyName === "transform") finishMove();
+    });
+    previous.addEventListener("click", () => move("previous"));
+    next.addEventListener("click", () => move("next"));
+    pause.addEventListener("click", () => {
+      isPaused = !isPaused;
+      playRequested = !isPaused;
+      updateState();
+      updateAutoplay();
+    });
+    carousel.addEventListener("pointerenter", (event) => {
+      if (event.pointerType !== "mouse") return;
+      isHovered = true;
+      updateAutoplay();
+    });
+    carousel.addEventListener("pointerleave", () => {
+      isHovered = false;
+      updateAutoplay();
+    });
+    carousel.addEventListener("focusin", (event) => {
+      if (event.target !== pause) playRequested = false;
+      updateAutoplay();
+    });
+    carousel.addEventListener("focusout", () => setTimeout(updateAutoplay, 0));
+    viewport.addEventListener("pointerdown", (event) => {
+      clearTimeout(swipeClickTimer);
+      swiped = false;
+      touchStart = event.pointerType === "touch" ? { x: event.clientX, y: event.clientY } : null;
+      isTouching = Boolean(touchStart);
+      updateAutoplay();
+    });
+    viewport.addEventListener("pointerup", (event) => {
+      if (!touchStart) return;
+      const dx = event.clientX - touchStart.x;
+      const dy = event.clientY - touchStart.y;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        swiped = true;
+        swipeClickTimer = setTimeout(() => { swiped = false; }, 300);
+        move(dx < 0 ? "next" : "previous");
+      }
+      touchStart = null;
+      isTouching = false;
+      updateAutoplay();
+    });
+    viewport.addEventListener("pointercancel", () => {
+      touchStart = null;
+      isTouching = false;
+      updateAutoplay();
+    });
+    viewport.addEventListener("click", (event) => {
+      if (!swiped) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      swiped = false;
+    }, true);
+    document.addEventListener("visibilitychange", updateAutoplay);
+    document.addEventListener("portfolio:lightboxchange", updateAutoplay);
+    document.addEventListener("portfolio:projectfilterchange", () => resetCarousel(true));
+    // Mobile browser chrome changes height during scrolling; preserve the slide.
+    window.addEventListener("resize", () => {
+      const width = carousel.clientWidth;
+      if (width === lastCarouselWidth) return;
+      lastCarouselWidth = width;
+      resetCarousel();
+    });
+    new MutationObserver(updateAutoplay).observe(document.body, { attributes: true, attributeFilter: ["class"] });
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        isInView = entries[0].isIntersecting;
+        updateAutoplay();
+      });
+      observer.observe(viewport);
+    }
+    updateState();
+    updateAutoplay();
   });
 
   // ==========================================
@@ -328,6 +557,7 @@ document.addEventListener("DOMContentLoaded", () => {
         lightboxImage.alt = image.alt;
         lightboxCaption.textContent = image.alt;
         lightbox.showModal();
+        document.dispatchEvent(new Event("portfolio:lightboxchange"));
         closeButton?.focus();
       };
 
@@ -341,53 +571,74 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     closeButton?.addEventListener("click", closeLightbox);
+    lightbox.addEventListener("close", () => {
+      document.dispatchEvent(new Event("portfolio:lightboxchange"));
+    });
     lightbox.addEventListener("click", (event) => {
       if (event.target === lightbox) closeLightbox();
     });
   }
 
   // ==========================================
-  // 12. SCROLL REVEAL (INTERSECTION OBSERVER)
+  // 12. REPEATABLE SCROLL TRANSITIONS
   // ==========================================
   const revealItems = document.querySelectorAll(".reveal");
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let revealObserver;
+  let motionResizeFrame;
 
-  const checkImmediateVisibility = () => {
-    const vh = window.innerHeight || document.documentElement.clientHeight;
-    revealItems.forEach((item) => {
-      const rect = item.getBoundingClientRect();
-      if (rect.top <= vh + 150) {
-        item.classList.add("is-visible");
-      }
-    });
-  };
+  const configureScrollMotion = () => {
+    revealObserver?.disconnect();
 
-  if (prefersReducedMotion || !("IntersectionObserver" in window)) {
-    revealItems.forEach((item) => item.classList.add("is-visible"));
-  } else {
-    document.body.classList.add("reveal-init");
+    if (!("IntersectionObserver" in window)) {
+      revealItems.forEach((item) => item.classList.add("is-visible"));
+      return;
+    }
 
-    const revealObserver = new IntersectionObserver(
-      (entries, observer) => {
+    const headerHeight = header?.getBoundingClientRect().height ?? 64;
+    const distance = window.innerWidth <= 640 ? 40 : 80;
+    const viewportHeight = Math.max(1, window.innerHeight - headerHeight);
+    const revealThresholds = new Map(Array.from(revealItems, (item) => [
+      item,
+      Math.min(0.12, viewportHeight / Math.max(1, item.offsetHeight) * 0.16),
+    ]));
+    revealObserver = new IntersectionObserver(
+      (entries) => {
         entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
+          const item = entry.target;
+          const isVisible = entry.isIntersecting && entry.intersectionRatio >= revealThresholds.get(item);
+          item.classList.toggle("is-visible", isVisible);
         });
       },
-      { threshold: 0, rootMargin: "150px 0px 200px 0px" }
+      {
+        threshold: Array.from(new Set([0, ...revealThresholds.values()])),
+        rootMargin: `-${headerHeight}px 0px 0px 0px`,
+      }
     );
 
     revealItems.forEach((item) => {
+      // Paired content enters from opposite sides and exits to the same side.
+      const offset = item.dataset.delay === "1" ? distance : -distance;
+      item.style.setProperty("--reveal-offset", `${offset}px`);
       revealObserver.observe(item);
     });
+    document.body.classList.add("reveal-init");
+  };
 
-    checkImmediateVisibility();
-    setTimeout(checkImmediateVisibility, 150);
+  configureScrollMotion();
+  const scheduleScrollMotion = () => {
+    cancelAnimationFrame(motionResizeFrame);
+    motionResizeFrame = requestAnimationFrame(configureScrollMotion);
+  };
+  window.addEventListener("resize", scheduleScrollMotion);
+  if ("ResizeObserver" in window) {
+    // Recalculate after fonts, images, or project filtering change item sizes.
+    const motionSizeObserver = new ResizeObserver(scheduleScrollMotion);
+    revealItems.forEach((item) => motionSizeObserver.observe(item));
+    if (header) motionSizeObserver.observe(header);
   }
 
-  // Safety fallback: ensure nothing stays hidden
-  setTimeout(() => {
-    revealItems.forEach((item) => item.classList.add("is-visible"));
-  }, 1200);
+  // Keyboard navigation can always reveal and reach offscreen content.
+  revealItems.forEach((item) => {
+    item.addEventListener("focusin", () => item.classList.add("is-visible"));
+  });
 });
