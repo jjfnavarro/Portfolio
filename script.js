@@ -394,7 +394,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     const tick = (time) => {
       // Constant speed, with no waiting between projects or jumps on wraparound.
-      const speed = window.innerWidth <= 820 ? 22 : 30;
+      const speed = window.innerWidth <= 820 ? 40 : 54;
       if (lastTime) offset += Math.min(time - lastTime, 64) / 1000 * speed;
       lastTime = time;
       renderPosition();
