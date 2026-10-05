@@ -358,8 +358,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const pause = controls.querySelector("[data-project-pause]");
     const count = controls.querySelector(".project-carousel-count");
     let isPaused = false;
-    let playRequested = false;
-    let isHovered = false;
     let isTouching = false;
     let isInView = !("IntersectionObserver" in window);
     let isMoving = false;
@@ -394,10 +392,9 @@ document.addEventListener("DOMContentLoaded", () => {
       clearTimeout(autoplayTimer);
       if (!isInView || isPaused || isTouching || isMoving || document.hidden
         || visibleCards().length <= columns()
-        || (!playRequested && (isHovered || carousel.contains(document.activeElement)))
         || document.body.classList.contains("menu-open")
         || document.querySelector(".image-lightbox[open]")) return;
-      autoplayTimer = setTimeout(() => move("next"), 8000);
+      autoplayTimer = setTimeout(() => move("next"), 5000);
     };
     const resetPosition = () => {
       track.classList.add("is-resetting");
@@ -449,24 +446,9 @@ document.addEventListener("DOMContentLoaded", () => {
     next.addEventListener("click", () => move("next"));
     pause.addEventListener("click", () => {
       isPaused = !isPaused;
-      playRequested = !isPaused;
       updateState();
       updateAutoplay();
     });
-    carousel.addEventListener("pointerenter", (event) => {
-      if (event.pointerType !== "mouse") return;
-      isHovered = true;
-      updateAutoplay();
-    });
-    carousel.addEventListener("pointerleave", () => {
-      isHovered = false;
-      updateAutoplay();
-    });
-    carousel.addEventListener("focusin", (event) => {
-      if (event.target !== pause) playRequested = false;
-      updateAutoplay();
-    });
-    carousel.addEventListener("focusout", () => setTimeout(updateAutoplay, 0));
     viewport.addEventListener("pointerdown", (event) => {
       clearTimeout(swipeClickTimer);
       swiped = false;
