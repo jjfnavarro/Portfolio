@@ -964,7 +964,7 @@ h1, h2, h3, .brand-name {
     rgba(255, 255, 255, 0.6) 48%, rgba(255, 255, 255, 0.2) 60%, transparent 100%);
   transform: translateX(0) skewX(-20deg);
   opacity: 1;
-  animation: portrait-shine 4.8s linear infinite;
+  animation: portrait-shine 1.5s linear infinite;
 }
 
 @keyframes portrait-shine {
@@ -2810,7 +2810,7 @@ h1, h2, h3, .brand-name {
   }
 
   .portrait-image-wrap::after {
-    animation-duration: 4.8s !important;
+    animation-duration: 1.5s !important;
     animation-iteration-count: infinite !important;
   }
 
