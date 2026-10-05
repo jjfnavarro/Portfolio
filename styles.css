@@ -1358,43 +1358,14 @@ h1, h2, h3, .brand-name {
   display: flex;
   align-items: stretch;
   gap: var(--carousel-gap);
-  transition: transform 1500ms cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
-.project-carousel-track.is-resetting {
-  transition: none !important;
+  transition: none;
+  will-change: transform;
 }
 
 .project-carousel-track > .project-card {
   flex: 0 0 calc((100% - var(--carousel-gap)) / 2);
   min-width: 0;
   height: auto;
-}
-
-.project-carousel-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 1.4rem;
-}
-
-.project-carousel-controls[hidden] {
-  display: none;
-}
-
-.project-carousel-controls .slide-button {
-  width: 2.75rem;
-  height: 2.75rem;
-  border: 1px solid var(--border-subtle);
-}
-
-.project-carousel-count {
-  min-width: 3.5rem;
-  text-align: center;
-  color: var(--text-secondary);
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
 }
 
 @media (max-width: 820px) {
@@ -2816,14 +2787,6 @@ h1, h2, h3, .brand-name {
 
   .project-slideshow .slide {
     transition-duration: 1000ms, 1200ms, 0s !important;
-  }
-
-  .project-carousel-track {
-    transition-duration: 1500ms !important;
-  }
-
-  .project-carousel-track.is-resetting {
-    transition-duration: 0s !important;
   }
 
   .pulse-indicator::after,
